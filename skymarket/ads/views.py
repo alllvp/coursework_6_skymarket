@@ -5,7 +5,7 @@ from rest_framework.generics import get_object_or_404
 from .models import Ad, Comment
 from django_filters.rest_framework import DjangoFilterBackend
 from .filters import AdFilter
-from .serializers import AdSerializer, CommentSerializer
+from .serializers import AdSerializer, CommentSerializer, AdCreateSerializer, CommentCreateSerializer
 
 
 class AdPagination(pagination.PageNumberPagination):
@@ -17,7 +17,13 @@ class AdViewSet(viewsets.ModelViewSet):
     pagination_class = AdPagination
     filter_backends = (DjangoFilterBackend,)
     filterset_class = AdFilter
-    serializer_class = AdSerializer
+
+    def get_serializer_class(self):
+        if self.action in ['create']:
+            self.serializer_class = AdCreateSerializer
+        else:
+            self.serializer_class = AdSerializer
+        return super().get_serializer_class()
 
     def get_permissions(self):
         if self.action in ['retrieve', 'create', 'me']:
@@ -38,7 +44,13 @@ class AdViewSet(viewsets.ModelViewSet):
 
 class CommentViewSet(viewsets.ModelViewSet):
     queryset = Comment.objects.all()
-    serializer_class = CommentSerializer
+
+    def get_serializer_class(self):
+        if self.action in ['create']:
+            self.serializer_class = CommentCreateSerializer
+        else:
+            self.serializer_class = CommentSerializer
+        return super().get_serializer_class()
 
     def get_queryset(self):
         ad_instance = get_object_or_404(Ad, id=self.kwargs['ad_pk'])

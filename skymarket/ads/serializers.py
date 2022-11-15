@@ -21,6 +21,14 @@ class CommentSerializer(serializers.ModelSerializer):
                   )
 
 
+class CommentCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Comment
+        fields = ('pk',
+                  'text',
+                  )
+
+
 class AdSerializer(serializers.ModelSerializer):
     author_id = serializers.IntegerField(source='author.id', read_only=True)
     author_first_name = serializers.CharField(source='author.first_name', read_only=True)
@@ -38,4 +46,15 @@ class AdSerializer(serializers.ModelSerializer):
                   'author_last_name',
                   'image',
                   'phone',
+                  )
+
+
+class AdCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Ad
+        fields = ('pk',
+                  'title',
+                  'description',
+                  'price',
+                  'image',
                   )

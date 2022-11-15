@@ -14,7 +14,7 @@ services:
     - "5432:5432"
 
   frontend:
-    build: ../frontend_react/.
+    build: ../../coursework_6_skymarket/frontend_react
     volumes:
       - frontend:/app/build
     depends_on:
